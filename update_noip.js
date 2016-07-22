@@ -1,6 +1,9 @@
 var page = require('webpage').create();
 var system = require('system');
 var env = system.env;
+page.onConsoleMessage = function(msg) {
+    system.stderr.writeLine('console: ' + msg);
+};
 console.log('The default user agent is ' + page.settings.userAgent);
 if (env['NO_IP_USERNAME'] === undefined || env['NO_IP_USERNAME'] === null || env['NO_IP_USERNAME'] === ''){
     console.log('no user name in env. variables, please define your user name in the ENV as NO_IP_USERNAME and rerun.')
@@ -46,26 +49,38 @@ function doLogin(){
     }, env);
     console.log(ua)
 }
+function clickSelectorOrExit(selector, tag){
+	var result = page.evaluate(function(selector){
+		var domItem = document.querySelector(selector);
+		if( domItem != undefined && domItem != null ){
+			domItem.click();
+			return true;
+		}
+		return false;
+	}, selector);
+	if( ! result ){
+		console.error("failed to find selector: " + selector);
+		printScreenshot(true, tag);
+	}
+}
+
 function clickOnHost(){
-    page.evaluate(function(){
-        document.querySelector('#content-wrapper > div.row > div.col-lg-8.col-md-8.col-sm-12 > div:nth-child(1) > div:nth-child(1) > div > div > div > div > span.text-bg.text-success').click()
-    })
+	clickSelectorOrExit('#content-wrapper > div.row > div.col-lg-8.col-md-8' + 
+		'.col-sm-12 > div:nth-child(1) > div:nth-child(1) > div > div > div ' + 
+		'> div > div > span.text-bg.text-success', 'host');
 }
 
 function clickOnModify(){
-    page.evaluate(function(){
-        document.querySelector('#host-panel > table > tbody > tr > td.hidden-xs.clearfix > div > div').click()
-    })
+    clickSelectorOrExit('#host-panel > table > tbody > tr > td.hidden-xs.' + 
+		'clearfix > div > div', 'modity');
 }
 
 function clickOnUpdate(){
-    page.evaluate(function(){
-        document.querySelector('#host-modal > div > div > div > form > div.panel-body > div.form-footer.text-right > span').click()
-    })
+    clickSelectorOrExit('#host-modal > div > div > div > div > div > form > div.panel-body > div.form-footer.text-right > span', 'update');
 }
 
-var printScreenshot=function(isExit){
-    page.render('screenshot.jpg')
+var printScreenshot=function(isExit, tag){
+    page.render('screenshot' + tag + '.jpg')
     if( isExit === true ){
         phantom.exit()
     }
