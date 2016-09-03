@@ -15,6 +15,7 @@ class DBWrapper(object):
     """
     DEFAULT_DATABASE_FILE = 'hashes_per_file.sqlite'
     HASH_TABLE = 'hash_and_path'
+    COLLISION_VIEW = 'collisions'
     COL_PATH = 'path'
     COL_HASH = 'hash'
     COL_ID = '_id'
@@ -56,6 +57,14 @@ class DBWrapper(object):
             %s TEXT NOT NULL UNIQUE,
             %s TEXT NOT NULL);""" % (DBWrapper.HASH_TABLE, DBWrapper.COL_ID,\
                           DBWrapper.COL_PATH, DBWrapper.COL_HASH))
+        self.cached_connection.execute("""CREATE VIEW IF NOT EXISTS %s AS
+            SELECT t1.%s,t2.%s FROM %s as t1 INNER JOIN %s as t2 ON
+            (t1.%s = t2.%s AND t1.%s > t2.%s AND t1.%s != t2.%s);""" % (\
+            DBWrapper.COLLISION_VIEW, DBWrapper.COL_PATH, DBWrapper.COL_PATH,\
+            DBWrapper.HASH_TABLE, DBWrapper.HASH_TABLE, DBWrapper.COL_HASH,\
+            DBWrapper.COL_HASH, DBWrapper.COL_ID, DBWrapper.COL_ID, \
+            DBWrapper.COL_PATH, DBWrapper.COL_PATH))
+
 
     def add_file_and_hash(self, file_to_add, hash_of_file=None):
         if hash_of_file is None:
@@ -132,6 +141,20 @@ class FilesCollector(object):
                     if suffix in self.searched_files_suffix:
                         self.found_file_handler.file_found(fullpath)
 
+
+
+class DbFileAdderWrapper(object):
+    def __init__(self, handler, rootpath):
+        self.dbhandler = handler
+        self.collector = FilesCollector(self)
+        self.rootpath = rootpath
+
+    def file_found(self, path):
+        self.dbhandler.add_file_and_hash(path)
+
+    def start_searching(self):
+        self.collector.set_default_searched_suffixes(['jpeg','jpg','mp4','mpg'])
+        self.collector.search_in_root(self.rootpath)
 
 
 if __name__ == "__main__":
