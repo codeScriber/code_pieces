@@ -1,0 +1,16 @@
+{
+  "name": "mastercard_downloader",
+  "version": "1.0.0",
+  "description": "download mastercard summery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "c0d3scr1b3r",
+  "license": "ISC",
+  "dependencies": {
+    "nightmare": "^2.7.0",
+    "nightmare-inline-download": "^0.2.2",
+    "optimist": "^0.6.1"
+  }
+}

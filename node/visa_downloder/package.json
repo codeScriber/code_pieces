@@ -1,0 +1,26 @@
+{
+  "name": "myscrapper",
+  "version": "1.0.0",
+  "description": "scrapper for personal use",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/codeScriber/code_pieces.git"
+  },
+  "author": "c0d3scr1b3r",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codeScriber/code_pieces/issues"
+  },
+  "homepage": "https://github.com/codeScriber/code_pieces#readme",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "nightmare": "^2.7.0",
+    "nightmare-download-manager": "^0.2.1",
+    "nightmare-inline-download": "^0.2.2",
+    "optimist": "^0.6.1"
+  }
+}
