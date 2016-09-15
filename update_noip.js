@@ -15,6 +15,7 @@ if (env['NO_IP_PASSWORD'] === undefined || env['NO_IP_PASSWORD'] === null || env
 }
 page.settings.userAgent = 'SpecialAgent';
 page.viewportSize = { width: 1920, height: 1080 };
+console.log(new Date());
 page.open('https://www.noip.com/login', function(status) {
   if (status !== 'success') {
     console.log('Unable to access network');
