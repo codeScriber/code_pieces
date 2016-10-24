@@ -1,0 +1,27 @@
+{
+  "name": "no-ip-update",
+  "version": "1.0.0",
+  "description": "updates no-ip site",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/codeScriber/code_pieces.git"
+  },
+  "keywords": [
+    "no-ip",
+    "update"
+  ],
+  "author": "c0d3scr1b3r",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/codeScriber/code_pieces/issues"
+  },
+  "homepage": "https://github.com/codeScriber/code_pieces#readme",
+  "dependencies": {
+    "nightmare": "^2.8.1",
+    "optimist": "^0.6.1"
+  }
+}
